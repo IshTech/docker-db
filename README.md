@@ -4,7 +4,7 @@
         - `docker pull mysql`
         - `docker pull mysql:latest`
     - For specific version
-        - `docker pull mysql:8.3.0`
+        - `docker pull mysql:8.4.0`
 
 - To pull and run
     - `docker run --name you_can_choose_a_name -d mysql:latest`
