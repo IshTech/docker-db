@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+   mysql_multi_8_4:
+     image: mysql:8.4
+     container_name: mysql_multi_8_4
+     volumes:
+       - ./mysql_multi_8_4/data:/var/lib/mysql
+       - ./mysql_multi_8_4/run:/var/run/mysqld
+       - ./mysql_multi_8_4/init_scripts/:/docker-entrypoint-initdb.d/
+     restart: always
+     environment:
+       MYSQL_ROOT_USER: root
+       MYSQL_ROOT_PASSWORD: Qwer4321
+       MYSQL_PS1: "mysql_multi_8_4> "
+     ports:
+       - 43306:3306
+
    mysql_multi_8_0:
      image: mysql:8.0
      container_name: mysql_multi_8_0
@@ -11,12 +26,10 @@ services:
      restart: always
      environment:
        MYSQL_ROOT_USER: root
-       # TODO: change the password
        MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_8_0> "
-       TZ: Europe/Helsinki
      ports:
-       - 13306:3306
+       - 33306:3306
 
    mysql_multi_5_7:
      image: mysql:5.7
@@ -28,9 +41,7 @@ services:
      restart: always
      environment:
        MYSQL_ROOT_USER: root
-       # TODO: change the password
-       MYSQL_ROOT_PASSWORD: Asdf0987
+       MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_5_7> "
-       TZ: Europe/Helsinki
      ports:
-       - 23306:3306
+       - 53306:3306
