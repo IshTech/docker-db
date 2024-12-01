@@ -1,3 +1,4 @@
+- For MariaDB version 10.6
 - To change root password for DB
   - `MYSQL_ROOT_PASSWORD` to new value
 
@@ -5,13 +6,13 @@
   - `/e/mariadb/` to new value
 
 - To build and run (this will start mysql containers in background)
-  - `docker-compose -f mariadb-docker-compose.yml up -d`
+  - `docker-compose -f mariadb-10-docker-compose.yml up -d`
 
 - To stop it
-  - `docker-compose -f mariadb-docker-compose.yml stop`
+  - `docker-compose -f mariadb-10-docker-compose.yml stop`
 
 - To connect to docker using bash
-  - `docker exec -it mariadb_container bash`
+  - `docker exec -it mariadb_10_container bash`
 
 - To connect using mysql cli
   - From container bash

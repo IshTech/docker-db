@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mariadb_10:
+    image: mariadb:10.6
+    container_name: mariadb_10_container
+    environment:
+      MYSQL_ROOT_PASSWORD: Qwer4321
+      LANG: C.UTF-8
+      TZ: Europe/Helsinki
+    ports:
+      - 23306:3306
+    volumes:
+      - /e/mariadb_10/data:/var/lib/mysql
+      - /e/mariadb_10/run:/var/run/mysqld
+      - /e/mariadb_10/init_scripts/:/docker-entrypoint-initdb.d/
+      - /e/mariadb_10/custom:/opt/custom
+      - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
