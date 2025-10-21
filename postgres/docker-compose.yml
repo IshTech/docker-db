@@ -1,0 +1,13 @@
+services:
+  postgres_dev_db:
+    image: postgres:latest
+    container_name: postgres_dev_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: rootpass
+    ports:
+       - 15432:5432
+    volumes:
+      - /e/postgres/data:/var/lib/postgresql/data
+      - /e/postgres/run:/var/run/postgresql
+      - /e/postgres/init_scripts/:/docker-entrypoint-initdb.d/
