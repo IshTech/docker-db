@@ -6,7 +6,7 @@ services:
        - ./mysql_multi_9_5/data:/var/lib/mysql
        - ./mysql_multi_9_5/run:/var/run/mysqld
        - ./mysql_multi_9_5/init_scripts/:/docker-entrypoint-initdb.d/
-     restart: always
+     restart: no
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
@@ -21,7 +21,7 @@ services:
        - ./mysql_multi_8_4/data:/var/lib/mysql
        - ./mysql_multi_8_4/run:/var/run/mysqld
        - ./mysql_multi_8_4/init_scripts/:/docker-entrypoint-initdb.d/
-     restart: always
+     restart: no
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
@@ -36,7 +36,7 @@ services:
        - ./mysql_multi_8_0/data:/var/lib/mysql
        - ./mysql_multi_8_0/run:/var/run/mysqld
        - ./mysql_multi_8_0/init_scripts/:/docker-entrypoint-initdb.d/
-     restart: always
+     restart: no
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
@@ -51,7 +51,7 @@ services:
        - ./mysql_multi_5_7/data:/var/lib/mysql
        - ./mysql_multi_5_7/run:/var/run/mysqld
        - ./mysql_multi_5_7/init_scripts/:/docker-entrypoint-initdb.d/
-     restart: always
+     restart: no
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
