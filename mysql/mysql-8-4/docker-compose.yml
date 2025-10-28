@@ -8,7 +8,7 @@ services:
       - /e/mysql_8_4/init_scripts/:/docker-entrypoint-initdb.d/
       - /e/mysql_8_4/custom:/opt/custom
       - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
-    restart: always
+    restart: no
     environment:
       MYSQL_ROOT_USER: root
       # TODO: change the password
