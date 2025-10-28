@@ -3,10 +3,10 @@ services:
     image: mysql:8.4
     container_name: mysql_8_4
     volumes:
-      - /e/mysql_8/data:/var/lib/mysql
-      - /e/mysql_8/run:/var/run/mysqld
-      - /e/mysql_8/init_scripts/:/docker-entrypoint-initdb.d/
-      - /e/mysql_8/custom:/opt/custom
+      - /e/mysql_8_4/data:/var/lib/mysql
+      - /e/mysql_8_4/run:/var/run/mysqld
+      - /e/mysql_8_4/init_scripts/:/docker-entrypoint-initdb.d/
+      - /e/mysql_8_4/custom:/opt/custom
       - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
     restart: always
     environment:
