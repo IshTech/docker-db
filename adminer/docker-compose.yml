@@ -1,0 +1,7 @@
+services:
+  adminer:
+    image: adminer:latest
+    container_name: db_adminer
+    restart: always
+    ports:
+      - "58080:8080"
