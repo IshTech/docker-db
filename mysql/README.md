@@ -4,7 +4,7 @@
         - `docker pull mysql`
         - `docker pull mysql:latest`
     - For specific version
-        - `docker pull mysql:8.4.0`
+        - `docker pull mysql:8.0.44`
 
 - To pull and run
     - `docker run --name you_can_choose_a_name -d mysql:latest`
@@ -60,4 +60,3 @@
         - http://localhost:YOUR_CHOICE_OF_PORT
     - Adminer
         - `docker run --name you_can_choose_a_name --link <container_name_or_id_of_mysql>:db -p YOUR_CHOICE_OF_PORT:8080 adminer`
-
