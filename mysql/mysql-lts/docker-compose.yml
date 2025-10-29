@@ -1,0 +1,24 @@
+services:
+  mysql_lts:
+    image: mysql:lts
+    container_name: mysql_lts
+    environment:
+      MYSQL_ROOT_USER: root
+      # TODO: change the password
+      MYSQL_ROOT_PASSWORD: Qwer4321
+      MYSQL_PS1: "mysql_lts> "
+      LANG: C.UTF-8
+      TZ: Europe/Helsinki
+    ports:
+      - "${DB_PORT:-13306}:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --local-infile=1
+    volumes:
+      - /e/mysql_lts/data:/var/lib/mysql
+      - /e/mysql_lts/run:/var/run/mysqld
+      - /e/mysql_lts/init_scripts/:/docker-entrypoint-initdb.d/
+      - /e/mysql_lts/custom:/opt/custom
+      - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
+    restart: no
