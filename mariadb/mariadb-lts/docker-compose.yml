@@ -2,6 +2,7 @@ services:
   mariadb_lts:
     image: mariadb:lts
     container_name: mariadb_lts_container
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: Qwer4321
       MYSQL_PS1: "mariadb_lts> "
@@ -14,3 +15,6 @@ services:
       - /e/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/
       - /e/mariadb_lts/custom:/opt/custom
       - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "--silent"]
+      start_period: 45s
