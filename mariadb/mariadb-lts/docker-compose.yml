@@ -2,6 +2,7 @@ services:
   mariadb_lts:
     image: mariadb:lts
     container_name: mariadb_lts_container
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: Qwer4321
       MYSQL_PS1: "mariadb_lts> "

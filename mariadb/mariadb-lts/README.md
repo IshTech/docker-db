@@ -46,3 +46,19 @@ mariadb -u MYUSER -pMYPASSWORD -P MYPORT -h 127.0.0.1
 mariadb -u root -pQwer4321 -P 23306 -h 127.0.0.1
 ```
 
+```
+docker run -d \
+  --name mariadb_lts_container \
+  -e MYSQL_ROOT_PASSWORD=Qwer4321 \
+  -e MYSQL_PS1="mariadb_lts> " \
+  -e LANG=C.UTF-8 \
+  -p ${DB_PORT:-23306}:3306 \
+  -v /e/mariadb_lts/data:/var/lib/mysql \
+  -v /e/mariadb_lts/run:/var/run/mysqld \
+  -v /e/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ \
+  -v /e/mariadb_lts/custom:/opt/custom \
+  -v ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf \
+  --restart unless-stopped \
+  mariadb:lts
+
+```
