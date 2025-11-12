@@ -1,0 +1,18 @@
+services:
+  postgres_dev:
+    image: postgres:18
+    container_name: postgres_18_container
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ishtech_dev_db
+      POSTGRES_USER: ishtech_dev_user
+      POSTGRES_PASSWORD: ishtech_dev_pass
+    ports:
+      - ${DB_PORT:-15432}:5432
+    volumes:
+      - /e/postgres_18/data:/var/lib/postgresql/18/data
+      - /e/postgres_18/init_scripts/:/docker-entrypoint-initdb.d/
+      - /e/postgres_18/custom:/opt/custom
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      start_period: 45s
