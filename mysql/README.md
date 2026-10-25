@@ -1,12 +1,16 @@
 # docker-mysql
 - To pull
-    - For latest
+    - For latest (innovation release, 26.x as of Oct-2026)
         - `docker pull mysql`
         - `docker pull mysql:latest`
+    - For LTS (9.7.x as of Oct-2026)
+        - `docker pull mysql:lts`
     - For specific version
-        - `docker pull mysql:8.0.44`
+        - `docker pull mysql:9.7.4`
+        - `docker pull mysql:26.10.0`
 
 - To pull and run
+    - `docker run --name you_can_choose_a_name -d mysql:lts`
     - `docker run --name you_can_choose_a_name -d mysql:latest`
         - `-d` is for detached mode
         - `--name` for container name is optional, but makes it convinient

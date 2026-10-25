@@ -1,0 +1,23 @@
+services:
+  mysql_latest:
+    image: mysql:latest
+    container_name: mysql_latest_container
+    environment:
+      MYSQL_ROOT_USER: root
+      # TODO: change the password
+      MYSQL_ROOT_PASSWORD: Qwer4321
+      MYSQL_PS1: "mysql_latest> "
+      LANG: C.UTF-8
+      TZ: Europe/Helsinki
+    ports:
+      - "${DB_PORT:-14306}:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /e/mysql_latest/data:/var/lib/mysql
+      - /e/mysql_latest/run:/var/run/mysqld
+      - /e/mysql_latest/init_scripts/:/docker-entrypoint-initdb.d/
+      - /e/mysql_latest/custom:/opt/custom
+      - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
+    restart: no

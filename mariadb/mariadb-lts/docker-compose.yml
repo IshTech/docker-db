@@ -3,6 +3,8 @@ services:
     image: mariadb:lts
     container_name: mariadb_lts_container
     restart: unless-stopped
+    # passed as args, as a .cnf mounted from Windows is world-writable and ignored by MariaDB
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: Qwer4321
       MYSQL_PS1: "mariadb_lts> "
@@ -14,7 +16,6 @@ services:
       - /e/mariadb_lts/run:/var/run/mysqld
       - /e/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/
       - /e/mariadb_lts/custom:/opt/custom
-      - ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "--silent"]
       start_period: 45s
