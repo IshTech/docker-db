@@ -13,8 +13,17 @@ docker-compose up -d
 ```
 
 - To run on custom port, e.g. 53306
+  - bash / Git Bash
 ```
 DB_PORT=53306 docker-compose up -d
+```
+  - PowerShell
+```
+$env:DB_PORT=53306; docker-compose up -d
+```
+  - cmd
+```
+set "DB_PORT=53306" && docker-compose up -d
 ```
 
 - To run containers in background vs foreground
@@ -46,6 +55,19 @@ mariadb -u MYUSER -pMYPASSWORD -P MYPORT -h 127.0.0.1
 mariadb -u root -pQwer4321 -P 23306 -h 127.0.0.1
 ```
 
+## Run without docker-compose
+- Prefer `docker-compose up -d` above, it works same from any shell (bash, Git Bash, cmd, PowerShell)
+- Change `23306` for custom port of your choice, but ensure port is available
+- Run these from this `mariadb-lts` folder, as `my_utf8mb4.cnf` is picked from current folder
+  - Otherwise docker does not find the file, creates an empty folder named `my_utf8mb4.cnf` in current folder instead,
+    and container fails to start (error about mounting a directory onto a file)
+- For PowerShell or cmd use their versions further below (they differ: PowerShell continues lines with `` ` ``, cmd with `^`)
+
+- Linux / macOS / WSL / Git bash
+  - If running from Git Bash on Windows, prefix the command with `MSYS_NO_PATHCONV=1`
+    - i.e. `MSYS_NO_PATHCONV=1 docker run -d \ ...`
+    - Otherwise Git Bash rewrites `/e/...:/var/...` volume args into `E:\...;C:\Program Files\Git\var\...` and docker creates junk folders like `E:\mariadb_lts\data;C`
+
 ```
 docker run -d \
   --name mariadb_lts_container \
@@ -58,7 +80,47 @@ docker run -d \
   -v /e/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ \
   -v /e/mariadb_lts/custom:/opt/custom \
   -v ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf \
+  --health-cmd "mariadb-admin ping --silent" \
+  --health-start-period 45s \
   --restart unless-stopped \
   mariadb:lts
 
+```
+
+- PowerShell version
+```
+docker run -d `
+  --name mariadb_lts_container `
+  -e MYSQL_ROOT_PASSWORD=Qwer4321 `
+  -e MYSQL_PS1="mariadb_lts> " `
+  -e LANG=C.UTF-8 `
+  -p 23306:3306 `
+  -v E:/mariadb_lts/data:/var/lib/mysql `
+  -v E:/mariadb_lts/run:/var/run/mysqld `
+  -v E:/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ `
+  -v E:/mariadb_lts/custom:/opt/custom `
+  -v ${PWD}/my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf `
+  --health-cmd "mariadb-admin ping --silent" `
+  --health-start-period 45s `
+  --restart unless-stopped `
+  mariadb:lts
+```
+
+- cmd version
+```
+docker run -d ^
+  --name mariadb_lts_container ^
+  -e MYSQL_ROOT_PASSWORD=Qwer4321 ^
+  -e MYSQL_PS1="mariadb_lts> " ^
+  -e LANG=C.UTF-8 ^
+  -p 23306:3306 ^
+  -v E:/mariadb_lts/data:/var/lib/mysql ^
+  -v E:/mariadb_lts/run:/var/run/mysqld ^
+  -v E:/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ ^
+  -v E:/mariadb_lts/custom:/opt/custom ^
+  -v %cd%/my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf ^
+  --health-cmd "mariadb-admin ping --silent" ^
+  --health-start-period 45s ^
+  --restart unless-stopped ^
+  mariadb:lts
 ```
