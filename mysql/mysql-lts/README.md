@@ -44,6 +44,19 @@ DB_PORT=53306 docker-compose up -d
 docker-compose stop
 ```
 
+## Upgrade within same LTS, e.g. 9.7.0 to 9.7.4
+- In-place upgrade within an LTS series is supported, see [Upgrade Paths](https://dev.mysql.com/doc/refman/9.7/en/upgrade-paths.html)
+- `docker-compose pull` and `docker-compose up -d` gets newer patch of `mysql:lts`, and MySQL upgrades existing data automatically on first start
+  - Logs show `Server upgrade from '90700' to '90704' started.` and then `... completed.`
+  - No manual step needed, unlike MariaDB which needs `mariadb-upgrade`
+- Upgraded data cannot be used by older version, so take backup of data folder before pulling
+```
+docker logs mysql_lts_container 2>&1 | grep -i "server upgrade"
+```
+- Further reading
+  - [What the MySQL Upgrade Process Upgrades](https://dev.mysql.com/doc/refman/9.7/en/upgrading-what-is-upgraded.html)
+  - [MySQL Releases: Innovation and LTS](https://dev.mysql.com/doc/refman/9.7/en/mysql-releases.html)
+
 ## Upgrade from 8.4 LTS to 9.7 LTS
 - In-place upgrade from an LTS to next LTS is supported, but there is no going back to 8.4 on same data, so take backup first
   - [Upgrade Paths](https://dev.mysql.com/doc/refman/9.7/en/upgrade-paths.html)

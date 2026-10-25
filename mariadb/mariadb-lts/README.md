@@ -70,6 +70,9 @@ MARIADB_AUTO_UPGRADE: 1
 ```
 docker exec mariadb_lts_container mariadb-upgrade -uroot -pQwer4321
 ```
+- For reading and checking what changed between versions, e.g. 11.8 to 12.3
+  - [MariaDB Community Server Upgrade Paths](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/mariadb-community-server-upgrade-paths)
+  - [Upgrading from MariaDB 11.8 to MariaDB 12.3](https://mariadb.com/docs/server/server-management/install-and-upgrade-mariadb/upgrading/mariadb-community-server-upgrade-paths/upgrading-from-mariadb-11-8-to-mariadb-12-3)
 
 ## To connect
 - To connect to docker using bash
