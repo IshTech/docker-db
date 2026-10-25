@@ -6,6 +6,22 @@
 - HDD volumes for data and run
   - `/e/mysql_lts/` to new value
 
+## Charset and collation (utf8mb4)
+- On Linux / macOS, `my_utf8mb4.cnf` can be used by mounting it read-only, in `docker-compose.yml` under `volumes`
+```
+- ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf:ro
+```
+  - File must not be writable by others, else MySQL ignores it, i.e. `chmod 644 my_utf8mb4.cnf`
+- On Windows this file is ignored, even with `:ro`
+  - Docker shows files mounted from Windows as writable by everyone, and MySQL ignores such config files
+  - Logs show `[Warning] World-writable config file '/etc/mysql/conf.d/my_utf8mb4.cnf' is ignored.`
+- So `docker-compose.yml` also passes them as args under `command`, which works on all OS
+```
+command:
+  - --character-set-server=utf8mb4
+  - --collation-server=utf8mb4_unicode_ci
+```
+
 ## Build and run
 - To run on default port of 13306
 ```
@@ -83,3 +99,34 @@ mysql -u root -pQwer4321 -P 13306 -h 127.0.0.1
 ## Other options to set in env
 - E.g. Timezone
   - `TZ: Europe/Helsinki`
+
+## Import CSV using LOAD DATA LOCAL INFILE
+- Disabled by default, both server and client must allow it, else error
+  `ERROR 3948 (42000): Loading local data is disabled; this must be enabled on both the client and server sides`
+  - [Security Considerations for LOAD DATA LOCAL](https://dev.mysql.com/doc/refman/9.7/en/load-data-local-security.html)
+- Server side, any one of
+  - At runtime, lasts till container restart
+```
+SET GLOBAL local_infile = 1;
+```
+  - Permanently, add `- --local-infile=1` under `command` in `docker-compose.yml`
+    - Or `local-infile=1` in `my_utf8mb4.cnf` (already there), but works only on Linux / macOS, see charset section above
+- Client side
+  - mysql cli
+```
+mysql --local-infile=1 -u root -pQwer4321 -P 13306 -h 127.0.0.1
+```
+  - JDBC url (MySQL Connector/J) `allowLoadLocalInfile=true`, or safer `allowLoadLocalInfileInPath=/path/to/csv/folder`
+    - [Connector/J Security properties](https://dev.mysql.com/doc/connector-j/en/connector-j-connp-props-security.html)
+- Example, skipping header line
+```
+LOAD DATA LOCAL INFILE '/path/to/file.csv' INTO TABLE my_table
+  FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+```
+  - For CSV saved on Windows use `LINES TERMINATED BY '\r\n'`
+- After import disable it again
+```
+SET GLOBAL local_infile = 0;
+```

@@ -10,6 +10,22 @@
 - HDD volumes for data and run
   - `/e/mysql_latest/` to new value
 
+## Charset and collation (utf8mb4)
+- On Linux / macOS, `my_utf8mb4.cnf` can be used by mounting it read-only, in `docker-compose.yml` under `volumes`
+```
+- ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf:ro
+```
+  - File must not be writable by others, else MySQL ignores it, i.e. `chmod 644 my_utf8mb4.cnf`
+- On Windows this file is ignored, even with `:ro`
+  - Docker shows files mounted from Windows as writable by everyone, and MySQL ignores such config files
+  - Logs show `[Warning] World-writable config file '/etc/mysql/conf.d/my_utf8mb4.cnf' is ignored.`
+- So `docker-compose.yml` also passes them as args under `command`, which works on all OS
+```
+command:
+  - --character-set-server=utf8mb4
+  - --collation-server=utf8mb4_unicode_ci
+```
+
 ## Build and run
 - To run on default port of 14306 (different from LTS port 13306, so both can run together)
 ```
