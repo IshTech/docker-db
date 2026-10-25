@@ -6,6 +6,20 @@
 - HDD volumes for data and run
   - `/e/mariadb_lts/` to new value
 
+## Charset and collation (utf8mb4)
+- On Linux / macOS, can use `my_utf8mb4.cnf` by mounting it read-only, in `docker-compose.yml` under `volumes`
+```
+- ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf:ro
+```
+  - File must not be writable by others, else MariaDB ignores it, i.e. `chmod 644 my_utf8mb4.cnf`
+- On Windows this file is ignored, even with `:ro`
+  - Docker shows files mounted from Windows as writable by everyone, and MariaDB ignores such config files
+  - Logs show `Warning: World-writable config file '/etc/mysql/conf.d/my_utf8mb4.cnf' is ignored`
+- So instead `docker-compose.yml` passes them as args, which works on all OS
+```
+command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+```
+
 ## Build and run
 - To run on default port of 23306
 ```
@@ -78,9 +92,6 @@ mariadb -u root -pQwer4321 -P 23306 -h 127.0.0.1
 ## Run without docker-compose
 - Prefer `docker-compose up -d` above, it works same from any shell (bash, Git Bash, cmd, PowerShell)
 - Change `23306` for custom port of your choice, but ensure port is available
-- Run these from this `mariadb-lts` folder, as `my_utf8mb4.cnf` is picked from current folder
-  - Otherwise docker does not find the file, creates an empty folder named `my_utf8mb4.cnf` in current folder instead,
-    and container fails to start (error about mounting a directory onto a file)
 - For PowerShell or cmd use their versions further below (they differ: PowerShell continues lines with `` ` ``, cmd with `^`)
 
 - Linux / macOS / WSL / Git bash
@@ -99,12 +110,12 @@ docker run -d \
   -v /e/mariadb_lts/run:/var/run/mysqld \
   -v /e/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ \
   -v /e/mariadb_lts/custom:/opt/custom \
-  -v ./my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf \
   --health-cmd "mariadb-admin ping --silent" \
   --health-start-period 45s \
   --restart unless-stopped \
-  mariadb:lts
-
+  mariadb:lts \
+  --character-set-server=utf8mb4 \
+  --collation-server=utf8mb4_unicode_ci
 ```
 
 - PowerShell version
@@ -119,11 +130,12 @@ docker run -d `
   -v E:/mariadb_lts/run:/var/run/mysqld `
   -v E:/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ `
   -v E:/mariadb_lts/custom:/opt/custom `
-  -v ${PWD}/my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf `
   --health-cmd "mariadb-admin ping --silent" `
   --health-start-period 45s `
   --restart unless-stopped `
-  mariadb:lts
+  mariadb:lts `
+  --character-set-server=utf8mb4 `
+  --collation-server=utf8mb4_unicode_ci
 ```
 
 - cmd version
@@ -138,9 +150,10 @@ docker run -d ^
   -v E:/mariadb_lts/run:/var/run/mysqld ^
   -v E:/mariadb_lts/init_scripts/:/docker-entrypoint-initdb.d/ ^
   -v E:/mariadb_lts/custom:/opt/custom ^
-  -v %cd%/my_utf8mb4.cnf:/etc/mysql/conf.d/my_utf8mb4.cnf ^
   --health-cmd "mariadb-admin ping --silent" ^
   --health-start-period 45s ^
   --restart unless-stopped ^
-  mariadb:lts
+  mariadb:lts ^
+  --character-set-server=utf8mb4 ^
+  --collation-server=utf8mb4_unicode_ci
 ```
