@@ -6,7 +6,7 @@
   `docker-compose -f mysql-multi-docker-compose.yml stop`
 
 - To connect to docker using bash
-  - `docker exec -it mysql_multi_9_5 bash`
+  - `docker exec -it mysql_multi_9_7 bash`
   - `docker exec -it mysql_multi_8_4 bash`
   - `docker exec -it mysql_multi_8_0 bash`
   - `docker exec -it mysql_multi_5_7 bash`
