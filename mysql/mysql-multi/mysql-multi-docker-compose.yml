@@ -7,10 +7,14 @@ services:
        - ./mysql_multi_9_7/run:/var/run/mysqld
        - ./mysql_multi_9_7/init_scripts/:/docker-entrypoint-initdb.d/
      restart: no
+     command:
+       - --character-set-server=utf8mb4
+       - --collation-server=utf8mb4_unicode_ci
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_9_7> "
+       TZ: Europe/Helsinki
      ports:
        - 43306:3306
 
@@ -22,10 +26,14 @@ services:
        - ./mysql_multi_8_4/run:/var/run/mysqld
        - ./mysql_multi_8_4/init_scripts/:/docker-entrypoint-initdb.d/
      restart: no
+     command:
+       - --character-set-server=utf8mb4
+       - --collation-server=utf8mb4_unicode_ci
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_8_4> "
+       TZ: Europe/Helsinki
      ports:
        - 33306:3306
 
@@ -37,10 +45,14 @@ services:
        - ./mysql_multi_8_0/run:/var/run/mysqld
        - ./mysql_multi_8_0/init_scripts/:/docker-entrypoint-initdb.d/
      restart: no
+     command:
+       - --character-set-server=utf8mb4
+       - --collation-server=utf8mb4_unicode_ci
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_8_0> "
+       TZ: Europe/Helsinki
      ports:
        - 23306:3306
 
@@ -52,9 +64,13 @@ services:
        - ./mysql_multi_5_7/run:/var/run/mysqld
        - ./mysql_multi_5_7/init_scripts/:/docker-entrypoint-initdb.d/
      restart: no
+     command:
+       - --character-set-server=utf8mb4
+       - --collation-server=utf8mb4_unicode_ci
      environment:
        MYSQL_ROOT_USER: root
        MYSQL_ROOT_PASSWORD: Qwer4321
        MYSQL_PS1: "mysql_multi_5_7> "
+       TZ: Europe/Helsinki
      ports:
        - 53306:3306
