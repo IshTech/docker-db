@@ -37,6 +37,26 @@ set "DB_PORT=53306" && docker-compose up -d
 docker-compose stop
 ```
 
+## Upgrade to newer LTS image
+- Take backup of data folder before upgrade, e.g. copy `/e/mariadb_lts/data` to `/e/mariadb_lts/data-backup-YYYY-MM-DD`
+- Pull latest image and recreate container, data in `/e/mariadb_lts/data` is kept
+```
+docker-compose pull
+docker-compose up -d
+```
+- New image upgrades only the server program, not the system tables (`mysql` DB - users, privileges etc.) in existing data folder
+  - Those are upgraded by `mariadb-upgrade`, skipping it shows in logs as
+    `MariaDB upgrade (mariadb-upgrade or creating healthcheck users) required, but skipped due to $MARIADB_AUTO_UPGRADE setting`
+  - Our own DBs and tables are not affected
+- To run upgrade automatically on every start when needed, add in `docker-compose.yml` under `environment`
+```
+MARIADB_AUTO_UPGRADE: 1
+```
+- Or run it once manually while container is running
+```
+docker exec mariadb_lts_container mariadb-upgrade -uroot -pQwer4321
+```
+
 ## To connect
 - To connect to docker using bash
 ```
