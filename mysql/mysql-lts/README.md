@@ -82,4 +82,4 @@ mysql -u root -pQwer4321 -P 13306 -h 127.0.0.1
 
 ## Other options to set in env
 - E.g. Timezone
-  - `TZ: Atlantic/Reykjavik`
+  - `TZ: Europe/Helsinki`
